@@ -167,7 +167,7 @@ h1 span{color:var(--yel)}
  <div style="position:absolute;left:60px;right:60px;top:100px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
   <div class="card" style="padding:22px 26px;font-size:19px;line-height:1.5">
    <b style="font-size:24px;color:var(--navy)">Rodada</b><br>
-   1. O caso aparece no telão.<br>2. As equipes discutem com o <b>Checklist do Detetive</b> (tempo na tela).<br>3. Todas levantam a plaquinha ao mesmo tempo.<br>4. O professor marca os votos e clica em <b>Revelar</b>.<br>5. Se a equipe explicar a pista principal, marque <b>+5 pista</b>.
+   1. O caso aparece no telão.<br>2. As equipes discutem com o <b>Checklist do Detetive</b> (tempo na tela).<br>3. Todas levantam a plaquinha ao mesmo tempo.<br>4. O professor marca os votos e clica em <b>Revelar</b>.<br>5. Se a equipe acertou e explicou a pista principal, marque <b>+5 pista</b>.
   </div>
   <div class="card" style="padding:22px 26px;font-size:19px;line-height:1.5">
    <b style="font-size:24px;color:var(--navy)">Os 3 selos</b><br>
@@ -177,7 +177,7 @@ h1 span{color:var(--yel)}
   </div>
   <div class="card" style="padding:22px 26px;font-size:19px;line-height:1.5">
    <b style="font-size:24px;color:var(--navy)">Pontos</b><br>
-   +10 acerto · +5 pista explicada · +10 combo (3 acertos seguidos)<br>
+   +10 acerto · +5 pista explicada (só para quem acertou) · +10 combo (3 acertos seguidos)<br>
    🏅 Medalhas: Olho de Lince, Desmascarador, Fora de Contexto, Sem Pegadinha.<br>
    🔒 Turma com 70% de acertos desbloqueia o <b>Caso Secreto</b> (vale o dobro).
   </div>
@@ -307,14 +307,14 @@ const ILL={
  cha:`<div style="width:100%;height:100%;background:linear-gradient(160deg,#2b5876,#4e4376);display:flex;align-items:center;justify-content:center"><svg width="200" height="200" viewBox="0 0 200 200"><path d="M40 80 h100 v60 a40 40 0 0 1 -40 40 h-20 a40 40 0 0 1 -40 -40z" fill="#fff"/><path d="M140 95 h18 a18 18 0 0 1 0 36 h-18" stroke="#fff" stroke-width="10" fill="none"/><path d="M70 60 q-10 -20 0 -40 M95 60 q-10 -20 0 -40" stroke="#fff" stroke-width="6" fill="none" opacity=".7"/><rect x="60" y="100" width="60" height="30" rx="6" fill="#9ACD32"/></svg></div>`,
  ciencia:`<div style="font-size:26px">📱⚡🧍<br><span style="font-size:20px">“ENERGIA DO CORPO”</span></div>`,
  shopping:`<div style="width:100%;height:170px;background:linear-gradient(180deg,#cfd8dc,#90a4ae);border-radius:8px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:10px"><div style="width:70%;height:70%;background:#eceff1;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#546e7a;font-size:22px">SHOPPING</div></div>`,
- enem:`<div>ENEM 2026<br>ADIADO 😱</div>`
+ enem:`<div>ENEM 2027<br>ADIADO 😱</div>`
 };
 
 /* ================== CARDS PADRÃO (fictícios) ================== */
 const DEFAULT=[
-{id:'p1',tipo:'whatsapp',autor:'Família Silva',texto:'🚨 URGENTE!!! A partir de novembro todas as escolas estaduais vão ter aula aos SÁBADOS!!! O governo já decidiu. Repassa pra geral antes que apaguem!!!',selo:'FAKE',
+{id:'p1',tipo:'whatsapp',autor:'Família Silva',texto:'🚨 URGENTE!!! A partir do ano que vem todas as escolas estaduais vão ter aula aos SÁBADOS!!! O governo já decidiu. Repassa pra geral antes que apaguem!!!',selo:'FAKE',
  pistas:['Linguagem de urgência e muitos “!!!”','Pede para repassar “antes que apaguem”','“O governo” genérico: sem fonte nem data'],porque:'Nenhum órgão oficial anunciou a mudança. A mensagem não tem fonte, data nem autoria.',checar:'Procure no site oficial da Secretaria de Educação e em agências de checagem.'},
-{id:'p2',tipo:'perfil',autor:'@noticiass_oficial',extra:'2.341 seguidores · criado há 3 semanas',texto:'ÚLTIMA HORA: ENEM 2026 foi ADIADO para 2027! Compartilhe com quem vai fazer a prova 👇',ill:'enem',selo:'FAKE',
+{id:'p2',tipo:'perfil',autor:'@noticiass_oficial',extra:'2.341 seguidores · criado há 3 semanas',texto:'ÚLTIMA HORA: ENEM 2027 foi ADIADO para 2028! Compartilhe com quem vai fazer a prova 👇',ill:'enem',selo:'FAKE',
  pistas:['Nome com letra repetida imitando um veículo','Perfil novo e com poucos seguidores','Sem selo de verificação e sem link oficial'],porque:'O perfil imita um veículo de notícias. Datas do ENEM só são confirmadas pelos canais oficiais do órgão responsável.',checar:'Compare com o perfil e o site oficiais. Desconfie de perfis recém-criados.'},
 {id:'p3',tipo:'curiosidade',texto:'“No Brasil existem sapos menores que a unha de um dedo.”',ill:'sapo',selo:'FATO',
  pistas:['Parece exagero, mas é verificável','Fontes de divulgação científica confirmam'],porque:'Existem espécies de sapinhos brasileiros com cerca de 1 cm. Parece absurdo, mas é real!',checar:'Pesquise em fontes de divulgação científica e museus de história natural.'},
@@ -438,20 +438,20 @@ function reveal(){
  $('revPill').textContent=right?`${right} de ${G.teams.length} equipe(s) acertaram!`:'Ninguém acertou — bora checar!';
  $('revBox').innerHTML=renderCase(c);
  $('revStamp').innerHTML=`<div class="stamp" style="left:${c.selo==='NBEA'?150:200}px;top:300px;color:${S.c};border-color:${S.c};font-size:${c.selo==='NBEA'?56:100}px">${c.selo==='NBEA'?'NÃO É<br>BEM ASSIM':S.t}</div>`;
- $('revExp').innerHTML=`<div style="padding:20px 24px"><div class="k">O QUE CIRCULA</div><div class="v">${esc(c.texto).slice(0,140)}${c.texto.length>140?'…':''}</div>
+ $('revExp').innerHTML=`<div style="padding:20px 24px"><div class="k">O QUE CIRCULA</div><div class="v">${esc(c.texto.length>140?c.texto.slice(0,140)+'…':c.texto)}</div>
   <div class="k">POR QUE ESTE SELO</div><div class="v">${esc(c.porque||'')}</div>
   ${(c.pistas||[]).filter(Boolean).length?`<div class="k">PISTAS DO DETETIVE</div>${c.pistas.filter(Boolean).map((p,i)=>`<div class="clue"><div class="ck" style="background:${S.c}">${i+1}</div><div>${esc(p)}</div></div>`).join('')}`:''}
   <div class="k">COMO CHECAR</div><div class="v">${esc(c.checar||'')}</div></div>`;
  const h=$('revHits');h.innerHTML='';
  G.teams.forEach((t,ti)=>{const ok=G.votes[ti]===c.selo;const d=document.createElement('div');d.className='hit '+(ok?'ok':'no');
-  d.innerHTML=`${ok?'✓':'✗'} ${esc(t.name)} <label><input type="checkbox"> +5 pista</label>`;
-  d.querySelector('input').onchange=e=>{G.pista[ti]=e.target.checked};h.appendChild(d)});
+  d.innerHTML=`${ok?'✓':'✗'} ${esc(t.name)}`+(ok?` <label><input type="checkbox"> +5 pista</label>`:'');
+  if(ok)d.querySelector('input').onchange=e=>{G.pista[ti]=e.target.checked};h.appendChild(d)});
  go('reveal');
  if(G.events.length)toast(G.events.join(' · '),4500);
 }
 function toScore(){
- const c=curCase(),mult=G.secret?2:1;
- G.teams.forEach((t,ti)=>{if(G.pista[ti]){t.pts+=5*mult;if(c.selo==='FAKE'&&!t.medals.has('desmasc')){t.medals.add('desmasc');toast(`🏅 ${t.name}: Desmascarador`)}}});
+ const c=curCase(),mult=G.secret?2:1,ev=[];
+ G.teams.forEach((t,ti)=>{if(G.pista[ti]&&G.votes[ti]===c.selo){t.pts+=5*mult;if(c.selo==='FAKE'&&!t.medals.has('desmasc')){t.medals.add('desmasc');ev.push(`🏅 ${t.name}: Desmascarador`)}}});
  G.pista={};
  const sorted=G.teams.slice().sort((a,b)=>b.pts-a.pts);const max=Math.max(10,sorted[0].pts);
  $('scoreTitle').textContent=`🔍 PLACAR · ${G.secret?'APÓS O CASO SECRETO':'APÓS A RODADA '+(G.i+1)}`;
@@ -462,8 +462,10 @@ function toScore(){
  $('nextBtn').textContent=last?'Ver conquistas ▶':'Próxima rodada ▶';
  $('scoreMsg').textContent=['Ótima investigação!','Detetives afiados!','Checar é o segredo!','Continuem atentos!'][G.i%4];
  go('score');
+ if(ev.length)toast(ev.join(' · '),4500);
 }
 function nextRound(){
+ if(G.test){backToEditor();return}
  if(G.secret){G.secret=false;G.secretDone=true;showAch();return}
  if(G.i>=G.deck.length-1){showAch();return}
  G.i++;showCase();
@@ -471,7 +473,7 @@ function nextRound(){
 const MED={lince:{ic:'👁',nm:'Olho de Lince',ds:'3 acertos seguidos',c:'#3D8BFD'},desmasc:{ic:'🔎',nm:'Desmascarador',ds:'explicou a pista de um FAKE',c:'#E8455A'},contexto:{ic:'⚖',nm:'Fora de Contexto',ds:'acertou um “Não é bem assim”',c:'#FF9F1C'},pegadinha:{ic:'✓',nm:'Sem Pegadinha',ds:'não caiu no fato “absurdo”',c:'#2FBF71'}};
 function showAch(){
  $('medalRow').innerHTML=Object.entries(MED).map(([k,m])=>{const who=G.teams.filter(t=>t.medals.has(k)).map(t=>t.name);
-  return `<div class="card medal" style="${who.length?'':'opacity:.45'}"><div class="ic" style="background:${m.c}">${m.ic}</div><div class="nm">${m.nm}</div><div class="ds">${m.ds}</div><div class="who">${who.length?who.join(', '):'ninguém ainda'}</div></div>`}).join('');
+  return `<div class="card medal" style="${who.length?'':'opacity:.45'}"><div class="ic" style="background:${m.c}">${m.ic}</div><div class="nm">${m.nm}</div><div class="ds">${m.ds}</div><div class="who">${who.length?who.map(esc).join(', '):'ninguém ainda'}</div></div>`}).join('');
  const pct=G.totalVotes?Math.round(100*G.totalHits/G.totalVotes):0;const ok=pct>=70;
  $('goalBox').innerHTML=`<b style="background:var(--yel);border-radius:12px;padding:6px 12px">META DA TURMA</b> ${pct}% de acertos (meta: 70%) → ${ok?(G.secretDone?'Caso Secreto concluído ✅':'<b>Caso Secreto desbloqueado! 🔓</b>'):'Caso Secreto bloqueado 🔒'}`;
  $('achBtns').innerHTML=(ok&&!G.secretDone?`<button class="btn y" onclick="go('secret')">🔓 Caso Secreto ▶</button>`:'')+`<button class="btn ${ok&&!G.secretDone?'ghost':'y'}" onclick="showFinal()">Resultado final ▶</button>`;
@@ -507,6 +509,7 @@ addEventListener('keydown',e=>{
 /* ================== EDITOR ================== */
 let ED=null; // card em edição
 function openEditor(){MINE=loadMine();go('editor');drawList();if(MINE.length)editCard(MINE[0].id);else newCard()}
+function backToEditor(){const keep=G.testCard;G={};MINE=loadMine();go('editor');ED=keep;drawForm();drawList();toast('Teste concluído. Seu card continua aqui — lembre de salvar.')}
 function drawList(){
  const l=$('edList');
  l.innerHTML=`<div class="secTitle">MEUS CARDS (${MINE.length})</div>`+(MINE.length?MINE.map(c=>`<div class="ed-item ${ED&&ED.id===c.id?'sel':''}" onclick="editCard('${c.id}')"><span class="dot" style="background:${SELO[c.selo].c}"></span><div>${esc((c.texto||'(sem texto)').slice(0,60))}<br><small>${TIPO[c.tipo]} · ${SELO[c.selo].t}</small></div></div>`).join(''):'<div style="font-size:15px;color:#667;padding:6px">Nenhum card ainda. Clique em “+ Novo card”.</div>')
@@ -541,9 +544,8 @@ function shrink(file,cb){const r=new FileReader();r.onload=()=>{const im=new Ima
 function valid(){if(!ED.texto.trim()){toast('Escreva o texto do caso.');return false}if(!ED.porque.trim()){toast('Explique por que o caso é '+SELO[ED.selo].t+'.');return false}return true}
 function saveCard(){if(!valid())return;const c=JSON.parse(JSON.stringify(ED));c.pistas=c.pistas.filter(p=>p.trim());const i=MINE.findIndex(x=>x.id===c.id);if(i>=0)MINE[i]=c;else MINE.push(c);if(saveMine(MINE)){toast('✅ Card salvo!');drawList();drawForm()}}
 function delCard(){if(!confirm('Excluir este card?'))return;MINE=MINE.filter(x=>x.id!==ED.id);saveMine(MINE);MINE.length?editCard(MINE[0].id):newCard();drawList()}
-function testCard(){if(!valid())return;const c=JSON.parse(JSON.stringify(ED));c.pistas=c.pistas.filter(p=>p.trim());
- G={deck:[c],i:0,time:+$('optTime').value||60,teams:[{name:'TESTE',color:'#3D8BFD',pts:0,streak:0,hits:0,medals:new Set()}],votes:{},pista:{},solo:true,totalHits:0,totalVotes:0,test:true};showCase();toast('Modo teste: ao final, volte pelo botão do placar.')}
-const _next=nextRound;nextRound=function(){if(G.test){openEditor();return}_next()};
+function testCard(){if(!valid())return;const keep=JSON.parse(JSON.stringify(ED));const c=JSON.parse(JSON.stringify(ED));c.pistas=c.pistas.filter(p=>p.trim());
+ G={deck:[c],i:0,time:+$('optTime').value||60,teams:[{name:'TESTE',color:'#3D8BFD',pts:0,streak:0,hits:0,medals:new Set()}],votes:{},pista:{},solo:true,totalHits:0,totalVotes:0,test:true,testCard:keep};showCase();toast('Modo teste: no placar, clique no botão para voltar ao editor.')}
 function exportCards(){if(!MINE.length){toast('Nenhum card para exportar.');return}const b=new Blob([JSON.stringify({app:'detetives-da-informacao',versao:1,cards:MINE},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='meus-cards-detetives.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);toast('⬇ Arquivo exportado.')}
 function importCards(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);const arr=(d.cards||d).filter(c=>c&&c.texto&&SELO[c.selo]&&TIPO[c.tipo]);let n=0;arr.forEach(c=>{c.id='m'+Math.random().toString(36).slice(2,9);c.pistas=c.pistas||[];MINE.push(c);n++});saveMine(MINE);drawList();toast(`⬆ ${n} card(s) importado(s).`)}catch(err){toast('Arquivo inválido.')}e.target.value=''};r.readAsText(f)}
 </script>
